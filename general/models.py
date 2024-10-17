@@ -40,8 +40,7 @@ class Rol(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
         return self.name
-
-
+    
 class Congreso(models.Model):
     university = models.ForeignKey(University, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=50, unique=True)
@@ -63,4 +62,3 @@ class Congreso(models.Model):
 
     def __str__(self):
         return self.name
-
