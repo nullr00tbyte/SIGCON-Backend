@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     'rest_framework_simplejwt',
     'general'
@@ -131,4 +133,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # 24 horas
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Por ejemplo, 7 días para el refresh token
+    'ROTATE_REFRESH_TOKENS': True,  # Cambia el refresh token en cada uso
+    'BLACKLIST_AFTER_ROTATION': True,  # Añade el token a una lista negra tras la rotación
+    'ALGORITHM': 'HS256',  # Algoritmo de firma
+    'SIGNING_KEY': SECRET_KEY,  # Usa la clave secreta de tu proyecto
+    'AUTH_HEADER_TYPES': ('Bearer',),  # Tipo de encabezado de autorización
 }
