@@ -2,15 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from .mixins import flags
 
-class University(models.Model):
+class University(flags):
     name = models.CharField(max_length=100, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
         return self.name
 
-class Entidad(models.Model):
+class Entidad(flags):
     name = models.CharField(max_length=100)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='subentidades')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -19,33 +20,30 @@ class Entidad(models.Model):
     def __str__(self):
         return self.name
 
-class Person(models.Model):
+class Person(flags):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=False)
     university = models.ForeignKey(University, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE, null=True, blank=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="person_owner", null=True, blank=True)
     def __str__(self):
         return f"{self.user.email}"
 
-class Rol(models.Model):
+class Rol(flags):
     name = models.CharField(max_length=50, unique=True)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=False)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
         return self.name
     
-class Congreso(models.Model):
+class Congreso(flags):
     university = models.ForeignKey(University, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=50, unique=True)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=False)
     initial_date = models.DateField()
     end_date = models.DateField()
     place = models.ForeignKey(Entidad, on_delete=models.CASCADE, related_name="congress_places")

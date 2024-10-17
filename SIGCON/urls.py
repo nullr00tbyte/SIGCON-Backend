@@ -23,8 +23,11 @@ from general.views import api_root
 
 router = routers.DefaultRouter()
 router.register(r'user', UserViewSet, "user")
-router.register(r'entidades', EntidadViewSet)
-
+router.register(r'entity', EntidadViewSet, "entity")
+router.register(r'universities', UniversityViewSet)
+router.register(r'persons', PersonViewSet)
+router.register(r'roles', RolViewSet)
+router.register(r'congresos', CongresoViewSet)
 urlpatterns = [
     path('', api_root, name='api-root'), 
     path('admin/', admin.site.urls), 

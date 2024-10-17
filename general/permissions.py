@@ -4,10 +4,18 @@ from rest_framework.exceptions import PermissionDenied
 
 class IsActive(permissions.BasePermission):
     """
-    Verifica que el usuario este activo en la base de datos
+    Verifica que el usuario esté activo en la base de datos.
     """
 
     def has_permission(self, request, view):
-        person = Person.objects.get(pk = request.user.id)
+        if not request.user.is_authenticated:
+            return False
+        try:
+            person = Person.objects.get(pk=request.user.id)
+        except Person.DoesNotExist:
+            raise PermissionDenied("El usuario no esta registrado")
+        
         if not person.is_active:
-            raise PermissionDenied("El usuario no esta activo")
+            raise PermissionDenied("El usuario no está activo")
+        
+        return True
