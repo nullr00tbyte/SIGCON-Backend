@@ -44,3 +44,8 @@ class UniversitySerializer(serializers.ModelSerializer):
     class Meta:
         model = University
         fields = '__all__'
+
+class IdTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = IdentificationType
+        fields = '__all__'

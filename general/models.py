@@ -3,6 +3,12 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from .mixins import flags
+from django_countries.fields import CountryField
+
+class IdentificationType(flags):
+    name = models.CharField(max_length=50, unique=True)
+    def __str__(self):
+        return self.name
 
 class University(flags):
     name = models.CharField(max_length=100, unique=True)
@@ -26,7 +32,10 @@ class Person(flags):
     university = models.ForeignKey(University, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE, null=True, blank=True)
+    type_identification = models.ForeignKey(IdentificationType, on_delete=models.CASCADE, null=True, blank=True)
+    identification = models.CharField(max_length=50, unique=True, null=True, blank=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="person_owner", null=True, blank=True)
+    country = CountryField(default='HN')
     def __str__(self):
         return f"{self.user.email}"
 

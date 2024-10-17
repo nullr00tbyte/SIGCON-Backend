@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from .models import Entidad, Person
 from .permissions import IsActive
 
+
+
 class UserViewSet(viewsets.ViewSet):
     """
     Vista de los datos del usuario logueado
@@ -67,3 +69,8 @@ class CongresoViewSet(viewsets.ReadOnlyModelViewSet):
     #Esta vista debe poder crear y editar los congresos
     def create(self, request, *args, **kwargs):
         pass
+
+class IdTypeViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [IsAuthenticated, IsActive]
+    queryset = IdentificationType.objects.filter(is_active=True)
+    serializer_class = IdTypeSerializer

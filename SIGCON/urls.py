@@ -28,6 +28,7 @@ router.register(r'universities', UniversityViewSet)
 router.register(r'persons', PersonViewSet)
 router.register(r'roles', RolViewSet)
 router.register(r'congresos', CongresoViewSet)
+router.register(r'IdType', IdTypeViewSet)
 urlpatterns = [
     path('', api_root, name='api-root'), 
     path('admin/', admin.site.urls), 
